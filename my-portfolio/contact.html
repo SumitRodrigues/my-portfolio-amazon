@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact - Your Name</title>
+    <title>Contact - Sumit Rodrigues</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
     <nav>
         <div class="nav-container">
-            <div class="logo">Your Name</div>
+            <div class="logo">Sumit Rodrigues</div>
             <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
                 <span></span>
                 <span></span>
@@ -43,22 +44,17 @@
                         <div class="contact-methods">
                             <div class="contact-method">
                                 <h3>📧 Email</h3>
-                                <p>your.email@example.com</p>
+                                <p>sumitrod11@gmail.com</p>
                             </div>
                             
                             <div class="contact-method">
                                 <h3>💼 LinkedIn</h3>
-                                <p><a href="https://linkedin.com/in/yourprofile">linkedin.com/in/yourprofile</a></p>
+                                <p><a href="https://linkedin.com/in/sumit-rodrigues">linkedin.com/in/sumit-rodrigues</a></p>
                             </div>
                             
                             <div class="contact-method">
                                 <h3>🐙 GitHub</h3>
-                                <p><a href="https://github.com/yourusername">github.com/yourusername</a></p>
-                            </div>
-                            
-                            <div class="contact-method">
-                                <h3>🐦 Twitter</h3>
-                                <p><a href="https://twitter.com/yourusername">@yourusername</a></p>
+                                <p><a href="https://github.com/SumitRodrigues">github.com/SumitRodrigues</a></p>
                             </div>
                         </div>
                         
@@ -71,7 +67,7 @@
                     
                     <div class="contact-form">
                         <h2>Send a Message</h2>
-                        <form action="#" method="POST">
+                        <form id="contactForm">
                             <div class="form-group">
                                 <label for="name">Name</label>
                                 <input type="text" id="name" name="name" required>
@@ -95,7 +91,7 @@
                             <button type="submit" class="btn btn-primary">Send Message</button>
                         </form>
                         
-                        <p class="form-note">Note: This form requires backend integration. For the workshop, participants can use services like Formspree or Netlify Forms.</p>
+                        <p class="form-note" id="formStatus"></p>
                     </div>
                 </div>
             </div>
@@ -104,7 +100,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2025 Your Name. All rights reserved.</p>
+            <p>&copy; 2025 Sumit Rodrigues. All rights reserved.</p>
         </div>
     </footer>
 
@@ -250,12 +246,44 @@
     </style>
 
     <script>
+        // Initialize EmailJS with your Public Key
+        emailjs.init('YOUR_PUBLIC_KEY'); // Replace with your EmailJS Public Key
+
         function toggleMobileMenu() {
             const navMenu = document.querySelector('.nav-menu');
             const toggle = document.querySelector('.mobile-menu-toggle');
             navMenu.classList.toggle('active');
             toggle.classList.toggle('active');
         }
+
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const btn = this.querySelector('button[type="submit"]');
+            const status = document.getElementById('formStatus');
+            btn.textContent = 'Sending...';
+            btn.disabled = true;
+
+            emailjs.sendForm(
+                'YOUR_SERVICE_ID',    // Replace with your EmailJS Service ID
+                'YOUR_TEMPLATE_ID',   // Replace with your EmailJS Template ID
+                this
+            ).then(
+                function(response) {
+                    status.textContent = '✅ Message sent successfully! I\'ll get back to you soon.';
+                    status.style.color = '#166534';
+                    document.getElementById('contactForm').reset();
+                    btn.textContent = 'Send Message';
+                    btn.disabled = false;
+                },
+                function(error) {
+                    status.textContent = '❌ Failed to send message. Please email me directly at sumitrod11@gmail.com';
+                    status.style.color = '#dc2626';
+                    btn.textContent = 'Send Message';
+                    btn.disabled = false;
+                }
+            );
+        });
     </script>
 </body>
 </html>
